@@ -1,4 +1,4 @@
-# AWS Purple Team Detection Lab
+# AWS Purple Team Detection Project
 
 An AWS-based Purple Team lab designed to simulate adversary activity, collect security telemetry, analyze attack behavior in a SIEM, and map observed activity to the MITRE ATT&CK framework.
 
