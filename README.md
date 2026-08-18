@@ -1,12 +1,12 @@
 # AWS Purple Team Detection Project
 
-An AWS-based Purple Team lab designed to simulate adversary activity, collect security telemetry, analyze attack behavior in a SIEM, and map observed activity to the MITRE ATT&CK framework.
+An AWS-based Purple Team Project designed to simulate adversary activity, collect security telemetry, analyze attack behavior in a SIEM, and map observed activity to the MITRE ATT&CK framework.
 
 ## Overview
 
 This project demonstrates a hands-on Purple Team workflow combining offensive security testing and defensive detection analysis in an AWS environment.
 
-The lab was built using separate virtual systems for attack simulation, target exploitation, centralized logging, and SIEM analysis. The objective was to generate realistic attack activity, capture the resulting telemetry, investigate indicators of compromise, and evaluate defensive visibility.
+The project was built using separate virtual systems for attack simulation, target exploitation, centralized logging, and SIEM analysis. The objective was to generate realistic attack activity, capture the resulting telemetry, investigate indicators of compromise, and evaluate defensive visibility.
 
 ## Objectives
 
@@ -21,7 +21,7 @@ The lab was built using separate virtual systems for attack simulation, target e
 
 ## Lab Architecture
 
-The lab consisted of three primary systems:
+The project consisted of three primary systems:
 
 * **Attacker:** Kali Linux
 * **Target:** Ubuntu Linux running Apache
@@ -92,12 +92,12 @@ A visual architecture diagram will be added to the `diagrams/` directory.
 
 The attack workflow focused on identifying and testing vulnerabilities affecting an Apache web server.
 
-The lab included activity related to:
+The project included activity related to:
 
 * CVE-2021-41773
 * CVE-2021-42013
 
-These vulnerabilities affected specific Apache HTTP Server versions and were used in the lab to demonstrate how exploitation activity could be observed and investigated from the defensive side.
+These vulnerabilities affected specific Apache HTTP Server versions and were used in the project to demonstrate how exploitation activity could be observed and investigated from the defensive side.
 
 ## Reconnaissance
 
@@ -178,7 +178,7 @@ Future versions of this repository will include reusable KQL and Sigma detection
 
 ## Indicators of Compromise
 
-Indicators observed during the lab included data such as:
+Indicators observed during the project included data such as:
 
 * Source IP addresses
 * Suspicious HTTP request paths
@@ -204,7 +204,7 @@ Additional ATT&CK mappings will be documented as the repository is expanded.
 
 ## Results
 
-The lab demonstrated the full lifecycle of a Purple Team exercise:
+The project demonstrated the full lifecycle of a Purple Team exercise:
 
 ```text
 Attack Simulation
@@ -233,7 +233,7 @@ The exercise showed how offensive activity can be translated into defensive dete
 ## Repository Structure
 
 ```text
-aws-purple-team-detection-lab/
+aws-purple-team-detection-project/
 |
 |-- README.md
 |-- LICENSE
@@ -282,6 +282,6 @@ Future improvements include:
 
 ## Disclaimer
 
-This project was conducted in an authorized lab environment for educational and defensive cybersecurity purposes.
+This project was conducted in an authorized project environment for educational and defensive cybersecurity purposes.
 
 Do not perform security testing against systems you do not own or have explicit permission to test.
