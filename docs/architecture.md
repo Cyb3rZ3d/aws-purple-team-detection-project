@@ -1,14 +1,3 @@
-
-# AWS Purple Team Detection Lab Architecture
-
-## Overview
-
-This lab uses separate attacker, target, and defensive systems hosted in AWS to demonstrate a complete Purple Team workflow.
-
-The attacker performs reconnaissance and exploitation against the target system. The target generates security telemetry, which is forwarded into the ELK Stack for centralized logging, investigation, IOC analysis, and detection engineering.
-
-## Architecture Diagram
-
 ```mermaid
 flowchart LR
 
@@ -43,3 +32,51 @@ flowchart LR
     ELASTIC -->|"Searchable Events"| KIBANA
 
     KIBANA --> ANALYSIS["IOC Analysis<br/>KQL Investigation<br/>MITRE ATT&CK Mapping<br/>Detection Engineering"]
+```
+
+
+
+```mermaid
+flowchart TD
+
+    A["1. Reconnaissance"]
+    B["2. Service Enumeration"]
+    C["3. Vulnerability Identification"]
+    D["4. Exploitation Attempt"]
+    E["5. Security Telemetry Generated"]
+    F["6. Logs Forwarded to SIEM"]
+    G["7. Kibana Investigation"]
+    H["8. IOC Identification"]
+    I["9. MITRE ATT&CK Mapping"]
+    J["10. Detection Development"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+```
+
+
+
+```mermaid
+flowchart LR
+
+    RED["Red Team Activity<br/>Reconnaissance<br/>Exploitation"]
+
+    TELEMETRY["Security Telemetry<br/>Apache Logs<br/>Linux Logs"]
+
+    BLUE["Blue Team Analysis<br/>SIEM Investigation<br/>IOC Analysis"]
+
+    DETECTION["Detection Engineering<br/>KQL<br/>ATT&CK Mapping"]
+
+    RED --> TELEMETRY
+    TELEMETRY --> BLUE
+    BLUE --> DETECTION
+
+    DETECTION -. "Detection Feedback" .-> RED
+```
