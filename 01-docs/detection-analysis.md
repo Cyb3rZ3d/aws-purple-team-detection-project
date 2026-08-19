@@ -313,8 +313,8 @@ The completed repository now includes a validated KQL investigation query and sa
 
 Current reusable content:
 
-- [Validated Apache path-traversal KQL](../detection-rules/kql/apache-path-traversal.kql)
-- [Sanitized IOC dataset](../iocs/sanitized-iocs.csv)
+- [Validated Apache path-traversal KQL](../02-detection-rules/kql/apache-path-traversal.kql)
+- [Sanitized IOC dataset](../03-iocs/sanitized-iocs.csv)
 
 Future Sigma and automation content can be added alongside the validated KQL material.
 
