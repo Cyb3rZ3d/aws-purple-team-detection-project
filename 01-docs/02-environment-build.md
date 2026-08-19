@@ -240,10 +240,10 @@ After the pipeline was validated:
 
 See:
 
-- [Completed engagement](completed-engagement.md)
-- [Attack scenario](attack-scenario.md)
-- [Detection analysis](detection-analysis.md)
-- [Architecture diagrams](architecture.md)
+- [Completed engagement](05-completed-engagement.md)
+- [Attack scenario](03-attack-scenario.md)
+- [Detection analysis](04-detection-analysis.md)
+- [Architecture diagrams](01-architecture.md)
 - [Validated KQL investigation](../02-detection-rules/kql/apache-path-traversal.kql)
 
 ## Security Improvements for a Rebuild
