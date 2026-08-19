@@ -57,3 +57,38 @@ flowchart TD
     G --> H["8. IOC Identification"]
     H --> I["9. MITRE ATT&CK Mapping"]
     I --> J["10. Detection Development"]
+
+
+flowchart LR
+
+    RED["Red Team Activity<br/>Reconnaissance<br/>Exploitation"]
+    
+    TELEMETRY["Security Telemetry<br/>Apache Logs<br/>Linux Logs"]
+
+    BLUE["Blue Team Analysis<br/>SIEM Investigation<br/>IOC Analysis"]
+
+    DETECTION["Detection Engineering<br/>KQL<br/>ATT&CK Mapping"]
+
+    RED --> TELEMETRY
+    TELEMETRY --> BLUE
+    BLUE --> DETECTION
+    DETECTION -. "Detection Feedback" .-> RED
+
+
+Apache / Ubuntu
+      ↓
+   rsyslog
+      ↓
+   Logstash
+      ↓
+Elasticsearch
+      ↓
+    Kibana
+      ↓
+Investigation
+      ↓
+IOC Analysis
+      ↓
+MITRE ATT&CK
+      ↓
+Detection Engineering
