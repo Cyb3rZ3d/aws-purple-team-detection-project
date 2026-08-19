@@ -121,11 +121,8 @@ Mappings distinguish between **attempted behavior** and **successful execution**
 ├── detection-rules/
 │   └── kql/
 │       └── apache-path-traversal.kql
-├── iocs/
-│   └── sanitized-iocs.csv
-├── diagrams/
-├── screenshots/
-└── scripts/
+└── iocs/
+    └── sanitized-iocs.csv
 ```
 
 ## Skills Demonstrated
