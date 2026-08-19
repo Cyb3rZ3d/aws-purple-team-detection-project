@@ -204,11 +204,11 @@ Potential detection opportunities included:
 
 These observations can be used to develop reusable KQL or Sigma detections.
 
-Detection content will be maintained separately under:
+The completed investigation query is maintained under:
 
-```text
-detection-rules/
-```
+- [Apache path-traversal KQL](../detection-rules/kql/apache-path-traversal.kql)
+
+The exercise confirmed that the patched Apache 2.4.58 target rejected both controlled requests while still generating searchable GET and POST telemetry with HTTP 400 responses.
 
 ---
 
