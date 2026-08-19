@@ -41,11 +41,11 @@ flowchart LR
     KIBANA --> ANALYSIS["IOC analysis<br/>Timeline<br/>ATT&CK mapping<br/>Detection recommendations"]
 ```
 
-Detailed diagrams are available in [01-docs/architecture.md](01-docs/architecture.md).
+Detailed diagrams are available in [01-docs/01-architecture.md](01-docs/01-architecture.md).
 
 ## AWS Build Evidence
 
-The full step-by-step cloud build—including EC2 provisioning, security groups, rsyslog/auditd, Elasticsearch, Logstash, Kibana, and end-to-end telemetry validation—is documented in [AWS Environment Build](01-docs/environment-build.md).
+The full step-by-step cloud build—including EC2 provisioning, security groups, rsyslog/auditd, Elasticsearch, Logstash, Kibana, and end-to-end telemetry validation—is documented in [AWS Environment Build](01-docs/02-environment-build.md).
 
 ![Kali EC2 instance used for the Red Team role](04-screenshots/aws-build/01-kali-ec2-instance.png)
 
@@ -90,7 +90,7 @@ Reusable queries are stored under [02-detection-rules/kql/](02-detection-rules/k
 
 ![Kibana evidence showing the detected Apache POST request](04-screenshots/kibana-detected-post-request.png)
 
-Additional terminal and Kibana evidence is available in the [completed engagement record](01-docs/completed-engagement.md).
+Additional terminal and Kibana evidence is available in the [completed engagement record](01-docs/05-completed-engagement.md).
 
 ## Indicators Examined
 
@@ -133,11 +133,11 @@ Mappings distinguish between **attempted behavior** and **successful execution**
 .
 ├── README.md
 ├── 01-docs/
-│   ├── architecture.md
-│   ├── attack-scenario.md
-│   ├── completed-engagement.md
-│   ├── detection-analysis.md
-│   └── environment-build.md
+│   ├── 01-architecture.md
+│   ├── 03-attack-scenario.md
+│   ├── 05-completed-engagement.md
+│   ├── 04-detection-analysis.md
+│   └── 02-environment-build.md
 ├── 02-detection-rules/
 │   └── kql/
 │       └── apache-path-traversal.kql
