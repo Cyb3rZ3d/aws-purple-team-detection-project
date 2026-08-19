@@ -29,13 +29,13 @@ flowchart LR
 
 A Kali Linux EC2 instance was created as the dedicated Red Team system.
 
-![AWS console showing the Kali EC2 instance](../screenshots/aws-build/01-kali-ec2-instance.png)
+![AWS console showing the Kali EC2 instance](../04-screenshots/aws-build/01-kali-ec2-instance.png)
 
 ### 2. Configure network access
 
 The lab security group was configured for the traffic required by the exercise, including administration, web testing, syslog, and Kibana access.
 
-![AWS security-group rules used during the Kali build](../screenshots/aws-build/02-kali-security-group-rules.png)
+![AWS security-group rules used during the Kali build](../04-screenshots/aws-build/02-kali-security-group-rules.png)
 
 For production, access should be restricted to approved source addresses and management interfaces should not be publicly exposed.
 
@@ -55,7 +55,7 @@ Additional security tooling was installed for the broader course environment, al
 
 Connectivity tests confirmed communication between the attacker and the other authorized lab systems.
 
-![Connectivity validation from the Kali environment](../screenshots/aws-build/03-kali-connectivity-test.png)
+![Connectivity validation from the Kali environment](../04-screenshots/aws-build/03-kali-connectivity-test.png)
 
 ## Phase 2 — Ubuntu Target and Log Source
 
@@ -63,7 +63,7 @@ Connectivity tests confirmed communication between the attacker and the other au
 
 A separate Ubuntu EC2 instance was created to serve as the controlled target and supplemental logging source.
 
-![AWS console showing the Ubuntu logger instance](../screenshots/aws-build/04-ubuntu-logger-instance.png)
+![AWS console showing the Ubuntu logger instance](../04-screenshots/aws-build/04-ubuntu-logger-instance.png)
 
 ### 2. Install logging services
 
@@ -78,7 +78,7 @@ sudo systemctl enable --now rsyslog
 sudo systemctl enable --now auditd
 ```
 
-![Service status confirming rsyslog and auditd were enabled](../screenshots/aws-build/05-rsyslog-auditd-services.png)
+![Service status confirming rsyslog and auditd were enabled](../04-screenshots/aws-build/05-rsyslog-auditd-services.png)
 
 ### 3. Generate a validation event
 
@@ -89,7 +89,7 @@ logger "This is a test log from ubuntu-logger"
 sudo tail -n 20 /var/log/syslog
 ```
 
-![Generated test event visible in Ubuntu syslog](../screenshots/aws-build/06-syslog-test-event.png)
+![Generated test event visible in Ubuntu syslog](../04-screenshots/aws-build/06-syslog-test-event.png)
 
 ### 4. Configure remote forwarding
 
@@ -105,7 +105,7 @@ The service was restarted after the configuration change:
 sudo systemctl restart rsyslog
 ```
 
-![rsyslog forwarding configuration](../screenshots/aws-build/07-rsyslog-forwarding-config.png)
+![rsyslog forwarding configuration](../04-screenshots/aws-build/07-rsyslog-forwarding-config.png)
 
 ### 5. Install and enable Apache
 
@@ -125,7 +125,7 @@ The AWS security group allowed the required internal HTTP traffic for the exerci
 
 A third Ubuntu EC2 instance was dedicated to the ELK Stack.
 
-![AWS console showing the SIEM EC2 instance](../screenshots/aws-build/08-siem-ec2-instance.png)
+![AWS console showing the SIEM EC2 instance](../04-screenshots/aws-build/08-siem-ec2-instance.png)
 
 ### 2. Install the runtime and Elastic components
 
@@ -156,7 +156,7 @@ curl http://localhost:9200
 sudo netstat -tuln | grep 9200
 ```
 
-![Elasticsearch API response validating the service](../screenshots/aws-build/09-elasticsearch-validation.png)
+![Elasticsearch API response validating the service](../04-screenshots/aws-build/09-elasticsearch-validation.png)
 
 Binding to `0.0.0.0` was a lab configuration. Production Elastic services should use authentication, TLS, restricted interfaces, and tightly scoped firewall rules.
 
@@ -172,13 +172,13 @@ server.host: "0.0.0.0"
 sudo systemctl enable --now kibana
 ```
 
-![Kibana running and accessible in the lab](../screenshots/aws-build/10-kibana-running.png)
+![Kibana running and accessible in the lab](../04-screenshots/aws-build/10-kibana-running.png)
 
 ### 5. Configure Logstash ingestion
 
 A Logstash pipeline was created under `/etc/logstash/conf.d/` to receive syslog events, process them, and send them to Elasticsearch.
 
-![Logstash syslog pipeline configuration](../screenshots/aws-build/11-logstash-syslog-config.png)
+![Logstash syslog pipeline configuration](../04-screenshots/aws-build/11-logstash-syslog-config.png)
 
 Logstash was then enabled and started:
 
@@ -190,7 +190,7 @@ sudo systemctl enable --now logstash
 
 The Ubuntu logger's rsyslog destination was updated with the SIEM server's private address.
 
-![Ubuntu rsyslog configured to forward to the SIEM](../screenshots/aws-build/12-logger-to-siem-forwarding.png)
+![Ubuntu rsyslog configured to forward to the SIEM](../04-screenshots/aws-build/12-logger-to-siem-forwarding.png)
 
 ## Phase 4 — End-to-End Validation
 
@@ -210,7 +210,7 @@ logger "Testing both port 514 and 5514 from Ubuntu logger"
 
 The event appeared in Kibana, confirming that the full telemetry pipeline worked before the Red Team exercise began.
 
-![Kibana showing the test log received from Ubuntu](../screenshots/aws-build/13-kibana-received-test-log.png)
+![Kibana showing the test log received from Ubuntu](../04-screenshots/aws-build/13-kibana-received-test-log.png)
 
 The validated path was:
 
@@ -244,7 +244,7 @@ See:
 - [Attack scenario](attack-scenario.md)
 - [Detection analysis](detection-analysis.md)
 - [Architecture diagrams](architecture.md)
-- [Validated KQL investigation](../detection-rules/kql/apache-path-traversal.kql)
+- [Validated KQL investigation](../02-detection-rules/kql/apache-path-traversal.kql)
 
 ## Security Improvements for a Rebuild
 

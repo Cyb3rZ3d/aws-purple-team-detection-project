@@ -67,31 +67,31 @@ Both requests were rejected. No unauthorized access, shell execution, persistenc
 
 The patched Apache target rejected the RCE-oriented POST request.
 
-![Terminal output for the rejected CVE-2021-42013-style request](../screenshots/cve-2021-42013-request-rejected.png)
+![Terminal output for the rejected CVE-2021-42013-style request](../04-screenshots/cve-2021-42013-request-rejected.png)
 
 ### CVE-2021-41773-style request rejected
 
 The patched Apache target rejected the encoded path-traversal GET request.
 
-![Terminal output for the rejected CVE-2021-41773-style request](../screenshots/cve-2021-41773-request-rejected.png)
+![Terminal output for the rejected CVE-2021-41773-style request](../04-screenshots/cve-2021-41773-request-rejected.png)
 
 ### POST activity detected in Kibana
 
 The SIEM recorded the encoded `/cgi-bin` POST request generated during the controlled test.
 
-![Kibana showing the detected POST request](../screenshots/kibana-detected-post-request.png)
+![Kibana showing the detected POST request](../04-screenshots/kibana-detected-post-request.png)
 
 ### GET activity detected in Kibana
 
 The SIEM recorded the encoded request associated with the path-traversal simulation.
 
-![Kibana showing the detected GET request](../screenshots/kibana-detected-get-request.png)
+![Kibana showing the detected GET request](../04-screenshots/kibana-detected-get-request.png)
 
 ### Event evidence detail
 
 The expanded Kibana record provides supporting request and response context for the investigation.
 
-![Expanded Kibana evidence for the attack event](../screenshots/kibana-attack-evidence-detail.png)
+![Expanded Kibana evidence for the attack event](../04-screenshots/kibana-attack-evidence-detail.png)
 
 ## Blue Team Findings
 

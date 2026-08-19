@@ -41,15 +41,15 @@ flowchart LR
     KIBANA --> ANALYSIS["IOC analysis<br/>Timeline<br/>ATT&CK mapping<br/>Detection recommendations"]
 ```
 
-Detailed diagrams are available in [docs/architecture.md](docs/architecture.md).
+Detailed diagrams are available in [01-docs/architecture.md](01-docs/architecture.md).
 
 ## AWS Build Evidence
 
-The full step-by-step cloud build—including EC2 provisioning, security groups, rsyslog/auditd, Elasticsearch, Logstash, Kibana, and end-to-end telemetry validation—is documented in [AWS Environment Build](docs/environment-build.md).
+The full step-by-step cloud build—including EC2 provisioning, security groups, rsyslog/auditd, Elasticsearch, Logstash, Kibana, and end-to-end telemetry validation—is documented in [AWS Environment Build](01-docs/environment-build.md).
 
-![Kali EC2 instance used for the Red Team role](screenshots/aws-build/01-kali-ec2-instance.png)
+![Kali EC2 instance used for the Red Team role](04-screenshots/aws-build/01-kali-ec2-instance.png)
 
-![Kibana receiving the Ubuntu validation event](screenshots/aws-build/13-kibana-received-test-log.png)
+![Kibana receiving the Ubuntu validation event](04-screenshots/aws-build/13-kibana-received-test-log.png)
 
 ## Attack-to-Detection Workflow
 
@@ -78,19 +78,19 @@ program:"apache_access"
 AND message:("/cgi-bin" OR "%2e" OR "bin/sh")
 ```
 
-Reusable queries are stored under [detection-rules/kql/](detection-rules/kql/).
+Reusable queries are stored under [02-detection-rules/kql/](02-detection-rules/kql/).
 
 ## Proof of Outcomes
 
 ### Patched server rejected the controlled request
 
-![Terminal evidence showing the controlled CVE-2021-42013-style request was rejected](screenshots/cve-2021-42013-request-rejected.png)
+![Terminal evidence showing the controlled CVE-2021-42013-style request was rejected](04-screenshots/cve-2021-42013-request-rejected.png)
 
 ### Kibana captured the malicious request pattern
 
-![Kibana evidence showing the detected Apache POST request](screenshots/kibana-detected-post-request.png)
+![Kibana evidence showing the detected Apache POST request](04-screenshots/kibana-detected-post-request.png)
 
-Additional terminal and Kibana evidence is available in the [completed engagement record](docs/completed-engagement.md).
+Additional terminal and Kibana evidence is available in the [completed engagement record](01-docs/completed-engagement.md).
 
 ## Indicators Examined
 
@@ -103,7 +103,7 @@ Additional terminal and Kibana evidence is available in the [completed engagemen
 - HTTP 400 rejection responses
 - Event timestamps defining the attack window
 
-Sanitized examples are available in [iocs/sanitized-iocs.csv](iocs/sanitized-iocs.csv).
+Sanitized examples are available in [03-iocs/sanitized-iocs.csv](03-iocs/sanitized-iocs.csv).
 
 ## MITRE ATT&CK Mapping
 
@@ -132,18 +132,18 @@ Mappings distinguish between **attempted behavior** and **successful execution**
 ```text
 .
 ├── README.md
-├── docs/
+├── 01-docs/
 │   ├── architecture.md
 │   ├── attack-scenario.md
 │   ├── completed-engagement.md
 │   ├── detection-analysis.md
 │   └── environment-build.md
-├── detection-rules/
+├── 02-detection-rules/
 │   └── kql/
 │       └── apache-path-traversal.kql
-├── iocs/
+├── 03-iocs/
 │   └── sanitized-iocs.csv
-└── screenshots/
+└── 04-screenshots/
     ├── cve-2021-41773-request-rejected.png
     ├── cve-2021-42013-request-rejected.png
     ├── kibana-attack-evidence-detail.png
