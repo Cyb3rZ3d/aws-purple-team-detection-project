@@ -72,6 +72,18 @@ AND message:("/cgi-bin" OR "%2e" OR "bin/sh")
 
 Reusable queries are stored under [detection-rules/kql/](detection-rules/kql/).
 
+## Proof of Outcomes
+
+### Patched server rejected the controlled request
+
+![Terminal evidence showing the controlled CVE-2021-42013-style request was rejected](screenshots/cve-2021-42013-request-rejected.png)
+
+### Kibana captured the malicious request pattern
+
+![Kibana evidence showing the detected Apache POST request](screenshots/kibana-detected-post-request.png)
+
+Additional terminal and Kibana evidence is available in the [completed engagement record](docs/completed-engagement.md).
+
 ## Indicators Examined
 
 - Source and destination roles
