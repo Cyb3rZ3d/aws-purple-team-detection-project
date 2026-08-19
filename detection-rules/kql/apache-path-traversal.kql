@@ -1,0 +1,24 @@
+/*
+Title: Apache encoded path traversal investigation
+Status: Validated as an investigation query in the CSEC 5350 lab
+Data source: Apache access events forwarded through rsyslog and Logstash
+Purpose: Identify requests containing traversal or shell-oriented indicators
+*/
+
+program:"apache_access"
+AND message:("/cgi-bin" OR "%2e" OR "bin/sh" OR "etc/passwd")
+
+/*
+Higher-context variant when the parsed status field is available:
+
+program:"apache_access"
+AND http.response.status_code:(400 OR 403)
+AND url.path:("/cgi-bin" OR *"%2e"* OR *"bin/sh"* OR *"etc/passwd"*)
+
+
+Validation notes:
+- Detected the controlled GET and POST requests in the completed exercise.
+- HTTP 400/403 indicates rejection, not proof that a request was harmless.
+- Tune field names to the deployed Logstash parsing schema.
+- Add source aggregation and a time window before promoting to an alert.
+*/
