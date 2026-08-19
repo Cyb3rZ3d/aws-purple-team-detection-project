@@ -135,9 +135,12 @@ Mappings distinguish between **attempted behavior** and **successful execution**
 │       └── apache-path-traversal.kql
 ├── iocs/
 │   └── sanitized-iocs.csv
-├── diagrams/
-├── screenshots/
-└── scripts/
+└── screenshots/
+    ├── cve-2021-41773-request-rejected.png
+    ├── cve-2021-42013-request-rejected.png
+    ├── kibana-attack-evidence-detail.png
+    ├── kibana-detected-get-request.png
+    └── kibana-detected-post-request.png
 ```
 
 ## Skills Demonstrated
