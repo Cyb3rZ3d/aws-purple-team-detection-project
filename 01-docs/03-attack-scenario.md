@@ -39,7 +39,7 @@ The objectives of the exercise were to:
 | Data Store     | Elasticsearch      | Indexes and stores security events              |
 | Analysis       | Kibana             | Event investigation and visualization           |
 
-For the complete architecture, see [Architecture Documentation](architecture.md).
+For the complete architecture, see [Architecture Documentation](01-architecture.md).
 
 ---
 
