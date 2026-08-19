@@ -1,287 +1,141 @@
 # AWS Purple Team Detection Project
 
-An AWS-based Purple Team Project designed to simulate adversary activity, collect security telemetry, analyze attack behavior in a SIEM, and map observed activity to the MITRE ATT&CK framework.
+A completed AWS-based Purple Team engagement that connected controlled offensive testing with centralized logging, SIEM investigation, IOC analysis, and MITRE ATT&CK mapping.
 
-## Overview
+> **Status:** Completed — Spring 2025  
+> **Course:** CSEC 5350, Intrusion Detection and Hacker Exploits  
+> **Scope:** Authorized educational environment owned and controlled by the project author
 
-This project demonstrates a hands-on Purple Team workflow combining offensive security testing and defensive detection analysis in an AWS environment.
+## Executive Summary
 
-The project was built using separate virtual systems for attack simulation, target exploitation, centralized logging, and SIEM analysis. The objective was to generate realistic attack activity, capture the resulting telemetry, investigate indicators of compromise, and evaluate defensive visibility.
+This project deployed a three-system cybersecurity environment in AWS:
 
-## Objectives
+- **Red Team:** Kali Linux EC2 instance
+- **Target / Log Source:** Ubuntu EC2 instance running Apache HTTP Server 2.4.58
+- **Blue Team:** Ubuntu EC2 instance running Elasticsearch, Logstash, and Kibana
 
-* Build an isolated AWS-based Purple Team environment
-* Simulate reconnaissance and exploitation activity
-* Generate security-relevant telemetry from the target system
-* Centralize logs using the ELK Stack
-* Analyze attack activity using Kibana and KQL
-* Identify indicators of compromise
-* Map attack behavior to MITRE ATT&CK
-* Evaluate detection opportunities based on observed telemetry
+Nmap was used to enumerate the target and identify Apache on TCP port 80. Controlled requests modeled the path-traversal and remote-code-execution patterns associated with **CVE-2021-41773** and **CVE-2021-42013**.
 
-## Lab Architecture
+The target was running a patched Apache release, so the requests were rejected rather than successfully exploited. This was an important verified result: the defensive pipeline still captured the malicious request patterns, HTTP methods, source activity, and HTTP 400 responses in Kibana. The exercise therefore demonstrated both effective patching and effective telemetry.
 
-The project consisted of three primary systems:
+## Verified Results
 
-* **Attacker:** Kali Linux
-* **Target:** Ubuntu Linux running Apache
-* **Defender / SIEM:** ELK Stack
+| Test | Observed result | Defensive evidence |
+| --- | --- | --- |
+| Nmap service enumeration | Apache 2.4.58 identified on TCP/80 | Service and version established for attack-surface analysis |
+| CVE-2021-41773 pattern | Encoded traversal request rejected | GET request recorded in Apache telemetry with HTTP 400 |
+| CVE-2021-42013 pattern | Traversal/RCE-style POST rejected | POST to an encoded `/cgi-bin` path recorded with HTTP 400 |
+| Log forwarding | Ubuntu and Apache events reached the SIEM | Events searchable through Elasticsearch and Kibana |
+| SIEM investigation | Attack events isolated with KQL | URI patterns, methods, timestamps, source, and status codes correlated |
+| ATT&CK analysis | Activity mapped to demonstrated behaviors | T1046, T1595.002, T1190, and conditional T1059 analysis |
 
-High-level data flow:
+## Architecture
 
-```text
-Kali Linux
-    |
-    | Reconnaissance / Attack Activity
-    v
-Ubuntu + Apache
-    |
-    | rsyslog
-    v
-Logstash
-    |
-    v
-Elasticsearch
-    |
-    v
-Kibana
-    |
-    v
-Detection Analysis / IOC Review / ATT&CK Mapping
+```mermaid
+flowchart LR
+    KALI["Kali Linux<br/>Nmap • curl"] -->|"Reconnaissance and controlled HTTP tests"| TARGET["Ubuntu + Apache 2.4.58"]
+    TARGET -->|"Apache and system logs"| RSYSLOG["rsyslog"]
+    RSYSLOG --> LOGSTASH["Logstash"]
+    LOGSTASH --> ELASTIC["Elasticsearch"]
+    ELASTIC --> KIBANA["Kibana / KQL"]
+    KIBANA --> ANALYSIS["IOC analysis<br/>Timeline<br/>ATT&CK mapping<br/>Detection recommendations"]
 ```
 
-A visual architecture diagram will be added to the `diagrams/` directory.
+Detailed diagrams are available in [docs/architecture.md](docs/architecture.md).
 
-## Technologies Used
+## Attack-to-Detection Workflow
 
-### Cloud
+1. Provisioned isolated AWS EC2 roles for the attacker, target/log source, and SIEM.
+2. Installed and verified rsyslog and auditd on the Ubuntu log source.
+3. Installed Elasticsearch, Logstash, and Kibana on the SIEM server.
+4. Forwarded logs to the SIEM and validated ingestion using generated test messages.
+5. Enumerated the target using Nmap SYN and service-version scanning.
+6. Identified Apache 2.4.58 on TCP port 80.
+7. Researched Apache path-traversal vulnerabilities and selected CVE-2021-41773 and CVE-2021-42013 for controlled simulation.
+8. Sent encoded GET and POST requests from Kali.
+9. Confirmed the patched server rejected both attempts.
+10. Located the resulting Apache events in Kibana, created an IOC table and timeline, mapped observed behavior to ATT&CK, and documented mitigations.
 
-* Amazon Web Services
-* Amazon EC2
-* VPC networking
-* Security Groups
+## Investigation Queries
 
-### Offensive Security
+The completed investigation used searches based on the Apache log program and encoded traversal indicators:
 
-* Kali Linux
-* Nmap
-* curl
-* Linux command-line tools
-
-### Target Environment
-
-* Ubuntu Linux
-* Apache HTTP Server
-
-### Logging and SIEM
-
-* rsyslog
-* Logstash
-* Elasticsearch
-* Kibana
-* Kibana Query Language
-
-### Analysis
-
-* Indicators of Compromise
-* CVE analysis
-* MITRE ATT&CK
-* Security event investigation
-
-## Attack Scenario
-
-The attack workflow focused on identifying and testing vulnerabilities affecting an Apache web server.
-
-The project included activity related to:
-
-* CVE-2021-41773
-* CVE-2021-42013
-
-These vulnerabilities affected specific Apache HTTP Server versions and were used in the project to demonstrate how exploitation activity could be observed and investigated from the defensive side.
-
-## Reconnaissance
-
-Reconnaissance activity was performed from the Kali Linux attacker system.
-
-Examples of activity included:
-
-* Host discovery
-* Port scanning
-* Service enumeration
-* Web service identification
-* Target validation prior to exploitation
-
-Nmap was used to identify exposed services and gather information about the target environment.
-
-## Exploitation
-
-After reconnaissance, the target Apache service was tested using crafted HTTP requests.
-
-The objective of this stage was to generate realistic attack traffic and validate whether the attack behavior could be observed through collected logs.
-
-The project focused on defensive analysis of the activity rather than persistence or destructive actions.
-
-## Logging Pipeline
-
-Security telemetry was centralized using the ELK Stack.
-
-The general log flow was:
-
-```text
-Ubuntu / Apache
-      |
-      v
-   rsyslog
-      |
-      v
-   Logstash
-      |
-      v
-Elasticsearch
-      |
-      v
-    Kibana
+```kql
+message:("/cgi-bin" OR "%2e" OR "bin/sh")
+AND program:("apache2" OR "apache_access")
 ```
 
-This allowed attack-related activity to be reviewed and analyzed from a centralized interface.
+```kql
+program:"apache_access"
+AND message:("/cgi-bin" OR "%2e" OR "bin/sh")
+```
 
-## SIEM Analysis
+Reusable queries are stored under [detection-rules/kql/](detection-rules/kql/).
 
-Kibana was used to review and investigate events generated during the attack simulation.
+## Indicators Examined
 
-Analysis focused on:
+- Source and destination roles
+- GET and POST methods
+- Encoded traversal sequences such as `%2e`
+- Requests involving `/cgi-bin`
+- Sensitive resource or shell strings
+- `curl` user-agent activity
+- HTTP 400 rejection responses
+- Event timestamps defining the attack window
 
-* Suspicious HTTP requests
-* Source IP activity
-* Request paths
-* Attack timing
-* Repeated reconnaissance behavior
-* Exploitation attempts
-* Relationships between attacker actions and target logs
-
-Kibana Query Language was used to filter and investigate relevant events.
-
-## Detection Engineering
-
-The project evaluated how observed attacker behavior could be converted into detection opportunities.
-
-Detection concepts included:
-
-* Repeated reconnaissance from a single source
-* Suspicious HTTP request paths
-* Requests associated with path traversal behavior
-* Unusual command execution patterns
-* High-frequency access attempts
-* Attack activity mapped to known adversary techniques
-
-Future versions of this repository will include reusable KQL and Sigma detection logic in the `detection-rules/` directory.
-
-## Indicators of Compromise
-
-Indicators observed during the project included data such as:
-
-* Source IP addresses
-* Suspicious HTTP request paths
-* Unusual web requests
-* Exploitation patterns
-* Event timestamps
-* Targeted services
-
-Sanitized IOC examples will be stored in the `iocs/` directory.
+Sanitized examples are available in [iocs/sanitized-iocs.csv](iocs/sanitized-iocs.csv).
 
 ## MITRE ATT&CK Mapping
 
-Observed activity was analyzed using the MITRE ATT&CK framework.
+| Activity demonstrated | Technique |
+| --- | --- |
+| Network service enumeration | T1046 — Network Service Discovery |
+| Active vulnerability scanning | T1595.002 — Vulnerability Scanning |
+| Testing an exposed Apache service | T1190 — Exploit Public-Facing Application |
+| Shell-oriented payload behavior | T1059 — Command and Scripting Interpreter, only as an attempted behavior because execution did not succeed |
 
-Relevant behavior included categories such as:
+Mappings distinguish between **attempted behavior** and **successful execution**. The evidence showed rejected requests and observable attack telemetry, not target compromise.
 
-* Reconnaissance
-* Network Service Scanning
-* Exploitation of Public-Facing Applications
-* Command and Scripting Interpreter
+## Defensive Recommendations
 
-Additional ATT&CK mappings will be documented as the repository is expanded.
+- Maintain Apache patching and version auditing.
+- Restrict security-group access to required sources and ports.
+- Deploy AWS WAF or ModSecurity rules for encoded traversal patterns.
+- Alert on repeated 400/403 responses involving `%2e`, `/cgi-bin`, `/bin/sh`, or `/etc/passwd`.
+- Monitor unusual command-line user agents such as `curl` and `python-requests`.
+- Forward Apache logs to centralized storage by default.
+- Correlate reconnaissance followed by suspicious web requests.
+- Enrich investigations with threat-intelligence context while prioritizing behavioral detection.
 
-## Results
-
-The project demonstrated the full lifecycle of a Purple Team exercise:
-
-```text
-Attack Simulation
-       |
-       v
-Telemetry Generation
-       |
-       v
-Centralized Logging
-       |
-       v
-SIEM Investigation
-       |
-       v
-IOC Identification
-       |
-       v
-MITRE ATT&CK Mapping
-       |
-       v
-Detection Development
-```
-
-The exercise showed how offensive activity can be translated into defensive detection and investigation workflows.
-
-## Repository Structure
+## Repository Contents
 
 ```text
-aws-purple-team-detection-project/
-|
-|-- README.md
-|-- LICENSE
-|-- .gitignore
-|
-|-- docs/
-|-- screenshots/
-|-- detection-rules/
-|-- scripts/
-|-- iocs/
-|-- diagrams/
+.
+├── README.md
+├── docs/
+│   ├── architecture.md
+│   ├── attack-scenario.md
+│   ├── completed-engagement.md
+│   ├── detection-analysis.md
+│   └── environment-build.md
+├── detection-rules/
+│   └── kql/
+│       └── apache-path-traversal.kql
+├── iocs/
+│   └── sanitized-iocs.csv
+├── diagrams/
+├── screenshots/
+└── scripts/
 ```
-
-## Planned Improvements
-
-Future improvements include:
-
-* Add architecture diagrams
-* Add sanitized Kibana screenshots
-* Add attack timeline documentation
-* Add KQL detection queries
-* Add Sigma detection rules
-* Add IOC datasets
-* Add MITRE ATT&CK technique mapping
-* Add Python-based log analysis
-* Expand attack scenarios
-* Add automated detection validation
 
 ## Skills Demonstrated
 
-* Purple Team Operations
-* Security Operations
-* Detection Engineering
-* SIEM Analysis
-* Cyber Threat Analysis
-* Vulnerability Analysis
-* Network Reconnaissance
-* Linux
-* AWS
-* ELK Stack
-* Kibana
-* KQL
-* MITRE ATT&CK
-* IOC Analysis
-* Technical Documentation
+AWS EC2 • VPC networking • Security Groups • Kali Linux • Ubuntu Linux • Apache • Nmap • curl • rsyslog • auditd • Logstash • Elasticsearch • Kibana • KQL • SIEM investigation • IOC analysis • CVE analysis • MITRE ATT&CK • Purple Team operations • Detection engineering • Technical documentation
 
-## Disclaimer
+## Key Takeaway
 
-This project was conducted in an authorized project environment for educational and defensive cybersecurity purposes.
+A prevented exploit can still produce valuable defensive evidence. In this engagement, patching stopped the tested Apache attack patterns, while centralized telemetry enabled the Blue Team to identify, correlate, and explain the attempted activity.
 
-Do not perform security testing against systems you do not own or have explicit permission to test.
+## Ethics and Safety
+
+All testing was performed in an authorized educational environment. Do not scan, exploit, or test systems without explicit permission.

@@ -296,9 +296,9 @@ This turns a search query into a more defensible detection.
 
 ---
 
-# 13. Future Detection Development
+# 13. Completed and Future Detection Development
 
-Future versions of the lab can expand detection coverage through:
+The completed repository now includes a validated KQL investigation query and sanitized IOC dataset. Further development can expand coverage through:
 
 * KQL detection queries
 * Sigma rules
@@ -311,13 +311,12 @@ Future versions of the lab can expand detection coverage through:
 * Automated ATT&CK mapping
 * Detection-as-code workflows
 
-Reusable detection content will be stored under:
+Current reusable content:
 
-```text
-detection-rules/
-├── kql/
-└── sigma/
-```
+- [Validated Apache path-traversal KQL](../detection-rules/kql/apache-path-traversal.kql)
+- [Sanitized IOC dataset](../iocs/sanitized-iocs.csv)
+
+Future Sigma and automation content can be added alongside the validated KQL material.
 
 ---
 

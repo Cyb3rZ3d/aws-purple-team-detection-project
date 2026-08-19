@@ -1,0 +1,8 @@
+indicator_type,indicator_value,context,observed_result
+request_path,/cgi-bin/<encoded-traversal>/etc/passwd,CVE-2021-41773-style controlled request,Rejected and logged
+request_path,/cgi-bin/<encoded-traversal>/bin/sh,CVE-2021-42013-style controlled request,Rejected and logged
+encoding_pattern,%2e,Encoded traversal component,Observed in Apache telemetry
+http_method,GET,Path traversal test,HTTP 400
+http_method,POST,RCE-oriented request test,HTTP 400
+user_agent,curl/<version>,Command-line HTTP client used by the lab,Observed in request metadata
+log_source,apache_access,Apache events forwarded to ELK,Searchable in Kibana
