@@ -43,6 +43,14 @@ flowchart LR
 
 Detailed diagrams are available in [docs/architecture.md](docs/architecture.md).
 
+## AWS Build Evidence
+
+The full step-by-step cloud build—including EC2 provisioning, security groups, rsyslog/auditd, Elasticsearch, Logstash, Kibana, and end-to-end telemetry validation—is documented in [AWS Environment Build](docs/environment-build.md).
+
+![Kali EC2 instance used for the Red Team role](screenshots/aws-build/01-kali-ec2-instance.png)
+
+![Kibana receiving the Ubuntu validation event](screenshots/aws-build/13-kibana-received-test-log.png)
+
 ## Attack-to-Detection Workflow
 
 1. Provisioned isolated AWS EC2 roles for the attacker, target/log source, and SIEM.
@@ -140,7 +148,9 @@ Mappings distinguish between **attempted behavior** and **successful execution**
     ├── cve-2021-42013-request-rejected.png
     ├── kibana-attack-evidence-detail.png
     ├── kibana-detected-get-request.png
-    └── kibana-detected-post-request.png
+    ├── kibana-detected-post-request.png
+    └── aws-build/
+        └── 13 original AWS construction screenshots
 ```
 
 ## Skills Demonstrated
