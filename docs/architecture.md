@@ -1,5 +1,6 @@
+# Architecture Diagram
 ```mermaid
-Architecture flowchart LR
+flowchart LR
 
     subgraph AWS["AWS Environment"]
 
@@ -35,9 +36,10 @@ Architecture flowchart LR
 ```
 
 
+# Attack-to-Detection Workflow
 
 ```mermaid
-Attack-to-Detection Workflow | flowchart TD
+flowchart TD
 
     A["1. Reconnaissance"]
     B["2. Service Enumeration"]
@@ -62,9 +64,10 @@ Attack-to-Detection Workflow | flowchart TD
 ```
 
 
+# Purple Team Model
 
 ```mermaid
-Purple Team Model | flowchart LR
+flowchart LR
 
     RED["Red Team Activity<br/>Reconnaissance<br/>Exploitation"]
 
