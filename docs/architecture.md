@@ -43,3 +43,17 @@ flowchart LR
     ELASTIC -->|"Searchable Events"| KIBANA
 
     KIBANA --> ANALYSIS["IOC Analysis<br/>KQL Investigation<br/>MITRE ATT&CK Mapping<br/>Detection Engineering"]
+
+
+
+flowchart TD
+
+    A["1. Reconnaissance"] --> B["2. Service Enumeration"]
+    B --> C["3. Vulnerability Identification"]
+    C --> D["4. Exploitation Attempt"]
+    D --> E["5. Security Telemetry Generated"]
+    E --> F["6. Logs Forwarded to SIEM"]
+    F --> G["7. Kibana Investigation"]
+    G --> H["8. IOC Identification"]
+    H --> I["9. MITRE ATT&CK Mapping"]
+    I --> J["10. Detection Development"]
